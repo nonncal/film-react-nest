@@ -4,6 +4,10 @@ import {ConfigModule} from "@nestjs/config";
 import * as path from "node:path";
 
 import {configProvider} from "./app.config.provider";
+import { FilmsController } from './films/films.controller';
+import { FilmsService } from './films/films.service';
+import { OrderService } from './order/order.service';
+import { OrderController } from './order/order.controller';
 
 @Module({
   imports: [
@@ -12,8 +16,12 @@ import {configProvider} from "./app.config.provider";
           cache: true
       }),
       // @todo: Добавьте раздачу статических файлов из public
+      ServeStaticModule.forRoot({
+          rootPath: path.join(__dirname, '..', 'content', 'afisha'),
+          serveRoot: '/content/afisha',
+      }),
   ],
-  controllers: [],
-  providers: [configProvider],
+  controllers: [FilmsController, OrderController],
+  providers: [configProvider, FilmsService, OrderService],
 })
 export class AppModule {}
