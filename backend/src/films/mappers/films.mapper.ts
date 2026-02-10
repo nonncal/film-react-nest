@@ -20,7 +20,7 @@ export class FilmMapper {
       rating: film.rating,
       director: film.director,
       tags: film.tags,
-      schedules: film.schedules.map((schedule) => this.scheduleToDto(schedule)),
+      schedules: film.schedule.map((schedule) => this.scheduleToDto(schedule)),
       image: film.image,
       cover: film.cover,
       description: film.description,

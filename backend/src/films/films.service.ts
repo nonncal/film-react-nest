@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { FilmsResponse } from './dto/films.dto';
 import { FilmsRepository } from 'src/repository/films.repository';
 import { FilmMapper } from './mappers/films.mapper';
@@ -18,7 +18,18 @@ export class FilmsService {
     }
   }
 
-  findSchedule(filmId: string) {
-    
+  async findSchedule(filmId: string) {
+    const film = await this.filmsRepository.findById(filmId);
+
+    if(!film) {
+      throw new NotFoundException('Film not found');
+    }
+
+    const scheduleItems = film.schedule.map((schedule) => FilmMapper.scheduleToDto(schedule));
+
+    return {
+      total: scheduleItems.length,
+      items: scheduleItems
+    };
   }
 }

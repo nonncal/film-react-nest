@@ -14,4 +14,8 @@ export class FilmsRepository {
   async count(): Promise<number> {
     return this.filmModel.countDocuments().exec();
   }
+
+  async findById(id: string): Promise<Film| null> {
+    return this.filmModel.findById(id).exec();
+  }
 }

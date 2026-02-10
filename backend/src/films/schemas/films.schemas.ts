@@ -43,7 +43,7 @@ export class Film extends Document {
   @Prop({required: true, type: String})
   cover: string;
   @Prop({required: true, type: [ScheduleSchema], default: []})
-  schedules: Schedule[];
+  schedule: Schedule[];
 }
 
 export const FilmSchema = SchemaFactory.createForClass(Film);
