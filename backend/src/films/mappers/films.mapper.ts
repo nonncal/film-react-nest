@@ -1,8 +1,7 @@
 import { FilmDto, ScheduleDto } from "../dto/films.dto";
-import { Film, Schedule } from "../schemas/films.schemas";
-
+import { Film, Schedule } from "../schemas/films.schema";
 export class FilmMapper {
-  static scheduleToDto(schedule: Schedule) : ScheduleDto {
+  static scheduleToDto(schedule: Schedule): ScheduleDto {
     return {
       id: schedule.id || '',
       daytime: schedule.daytime,
@@ -10,23 +9,23 @@ export class FilmMapper {
       rows: schedule.rows,
       seats: schedule.seats,
       price: schedule.price,
-      taken: schedule.taken
-    }
+      taken: schedule.taken,
+    };
   }
 
   static toDto(film: Film): FilmDto {
     return {
-      id: film._id.toString(),
+      id: film.id,  
       rating: film.rating,
       director: film.director,
       tags: film.tags,
-      schedules: film.schedule.map((schedule) => this.scheduleToDto(schedule)),
       image: film.image,
       cover: film.cover,
-      description: film.description,
       title: film.title,
-      about: film.about
-    }
+      about: film.about,
+      description: film.description,
+      schedule: film.schedule.map((s) => this.scheduleToDto(s)),
+    };
   }
 
   static toDtoArray(films: Film[]): FilmDto[] {

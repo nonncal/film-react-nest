@@ -33,7 +33,7 @@ export class FilmDto {
   @IsString()
   director: string;
   @IsArray()
-  schedules: ScheduleDto[];
+  schedule: ScheduleDto[];
   @IsFQDN()
   image: string;
   @IsFQDN()
