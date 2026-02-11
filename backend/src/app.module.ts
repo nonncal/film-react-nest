@@ -18,7 +18,7 @@ import { OrderModule } from './order/order.module';
       AppConfigModule,
       // @todo: Добавьте раздачу статических файлов из public
       ServeStaticModule.forRoot({
-          rootPath: path.join(__dirname, '..', 'content', 'afisha'),
+          rootPath: path.join(__dirname, '..', 'public', 'content', 'afisha'),
           serveRoot: '/content/afisha',
       }),
       MongooseModule.forRootAsync({
