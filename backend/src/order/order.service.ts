@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { FilmsRepository } from 'src/repository/films.repository';
 import { TicketDto, OrderDto } from './dto/order.dto';
 import { OrderMapper } from './mappers/order.mapper';
@@ -8,11 +12,10 @@ import { OrderRepository } from 'src/repository/order.repository';
 export class OrderService {
   constructor(
     private readonly orderRepository: OrderRepository,
-    private readonly filmsRepository: FilmsRepository
+    private readonly filmsRepository: FilmsRepository,
   ) {}
 
   async create(tickets: TicketDto[]): Promise<OrderDto> {
-
     if (!tickets || tickets.length === 0) {
       throw new BadRequestException('Tickets array is empty');
     }
@@ -30,20 +33,16 @@ export class OrderService {
 
     try {
       for (const ticket of tickets) {
-        console.log(`Attempting to book seat ${ticket.row}:${ticket.seat} for film ${ticket.film}, session ${ticket.session}`);
-
         const success = await this.filmsRepository.takeSeat(
           ticket.film,
           ticket.session,
           ticket.row,
-          ticket.seat
+          ticket.seat,
         );
-
-        console.log(`Booking result: ${success}`);
 
         if (!success) {
           throw new BadRequestException(
-            `Seat ${ticket.row}:${ticket.seat} is already taken`
+            `Seat ${ticket.row}:${ticket.seat} is already taken`,
           );
         }
 
@@ -58,79 +57,59 @@ export class OrderService {
       const total = tickets.reduce((acc, ticket) => acc + ticket.price, 0);
       const order = await this.orderRepository.create(tickets, total);
 
-      console.log('Order created successfully');
-
       return OrderMapper.toDto(order);
     } catch (error) {
-      
       for (const seat of bookedSeats) {
         await this.filmsRepository.releaseSeat(
           seat.filmId,
           seat.sessionId,
           seat.row,
-          seat.seat
+          seat.seat,
         );
       }
-      
+
       throw error;
     }
   }
 
-private async validateFilmsAndSessions(
-  tickets: TicketDto[],
-): Promise<void> {
+  private async validateFilmsAndSessions(tickets: TicketDto[]): Promise<void> {
+    for (const ticket of tickets) {
+      const film = await this.filmsRepository.findById(ticket.film);
 
-  for (const ticket of tickets) {
+      if (!film) {
+        throw new NotFoundException(`Film ${ticket.film} not found`);
+      }
 
-    const film = await this.filmsRepository.findById(ticket.film);
+      const schedule = film.schedule.find((s) => s.id === ticket.session);
 
-    if (!film) {
-      throw new NotFoundException(`Film ${ticket.film} not found`);
+      if (!schedule) {
+        throw new NotFoundException(`Session ${ticket.session} not found`);
+      }
+
+      this.validateSeatPosition(ticket.row, ticket.seat, schedule);
+    }
+  }
+
+  private validateSeatPosition(row: number, seat: number, schedule: any): void {
+    if (row < 1 || seat < 1) {
+      throw new BadRequestException('Row and seat must be >= 1');
     }
 
-    const schedule = film.schedule.find(
-      (s) => s.id === ticket.session
-    );
-
-    if (!schedule) {
-      throw new NotFoundException(
-        `Session ${ticket.session} not found`
+    if (row > schedule.rows) {
+      throw new BadRequestException(
+        `Row ${row} exceeds max rows (${schedule.rows})`,
       );
     }
 
-    this.validateSeatPosition(
-      ticket.row,
-      ticket.seat,
-      schedule
-    );
+    if (seat > schedule.seats) {
+      throw new BadRequestException(
+        `Seat ${seat} exceeds max seats (${schedule.seats})`,
+      );
+    }
   }
-}
-
-
-  private validateSeatPosition(
-  row: number,
-  seat: number,
-  schedule: any
-): void {
-  if (row < 1 || seat < 1) {
-    throw new BadRequestException('Row and seat must be >= 1');
-  }
-
-  if (row > schedule.rows) {
-    throw new BadRequestException(
-      `Row ${row} exceeds max rows (${schedule.rows})`
-    );
-  }
-
-  if (seat > schedule.seats) {
-    throw new BadRequestException(
-      `Seat ${seat} exceeds max seats (${schedule.seats})`
-    );
-  }
-}
   private checkDuplicatesaAndSeats(tickets: TicketDto[]): void {
     const seatKeys = tickets.map(
-      (t) => `${t.film}:${t.session}:${t.row}:${t.seat}`
+      (t) => `${t.film}:${t.session}:${t.row}:${t.seat}`,
     );
     const uniqKeys = new Set(seatKeys);
 

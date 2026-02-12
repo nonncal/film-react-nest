@@ -1,9 +1,4 @@
-import {
-  IsString,
-  IsNumber,
-  IsDateString,
-  Min,
-} from 'class-validator';
+import { IsString, IsNumber, IsDateString, Min } from 'class-validator';
 
 export class TicketDto {
   @IsString()

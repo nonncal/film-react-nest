@@ -17,7 +17,7 @@ export class OrderMapper {
   static toDto(order: OrderDocument): OrderDto {
     return {
       total: order.tickets.length,
-      items: order.tickets.map(ticket => this.ticketToDto(ticket)),
+      items: order.tickets.map((ticket) => this.ticketToDto(ticket)),
     };
   }
 }

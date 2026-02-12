@@ -1,5 +1,5 @@
-import { FilmDto, ScheduleDto } from "../dto/films.dto";
-import { Film, Schedule } from "../schemas/films.schema";
+import { FilmDto, ScheduleDto } from '../dto/films.dto';
+import { Film, Schedule } from '../schemas/films.schema';
 export class FilmMapper {
   static scheduleToDto(schedule: Schedule): ScheduleDto {
     return {
@@ -15,7 +15,7 @@ export class FilmMapper {
 
   static toDto(film: Film): FilmDto {
     return {
-      id: film.id,  
+      id: film.id,
       rating: film.rating,
       director: film.director,
       tags: film.tags,

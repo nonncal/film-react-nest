@@ -1,4 +1,13 @@
-import { IsArray, IsDateString, IsFQDN, IsInt, IsMongoId, IsNumber, IsString, Min } from "class-validator";
+import {
+  IsArray,
+  IsDateString,
+  IsFQDN,
+  IsInt,
+  IsMongoId,
+  IsNumber,
+  IsString,
+  Min,
+} from 'class-validator';
 
 //TODO описать DTO для запросов к /films
 export class ScheduleDto {
@@ -17,7 +26,7 @@ export class ScheduleDto {
   seats: number;
   @IsInt()
   @Min(0)
-  price: number
+  price: number;
   @IsArray()
   taken: string[];
 }

@@ -5,15 +5,14 @@ import { Model } from 'mongoose';
 import { TicketDto } from 'src/order/dto/order.dto';
 import { Order, OrderDocument } from 'src/order/schemas/order.schema';
 
-
 @Injectable()
 export class OrderRepository {
   constructor(
-    @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>
+    @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
   ) {}
 
   async create(tickets: TicketDto[], total: number): Promise<OrderDocument> {
-    const ticketsWithId = tickets.map(ticket => ({
+    const ticketsWithId = tickets.map((ticket) => ({
       ...ticket,
       id: randomUUID(),
     }));
