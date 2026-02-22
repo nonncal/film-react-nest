@@ -2,9 +2,7 @@ import { Order } from '../entities/order.entity';
 import { OrderDto, TicketResponseDto } from '../dto/order.dto';
 
 export class OrderMapper {
-  static ticketToDto(
-    ticket: Order['tickets'][number]
-  ): TicketResponseDto {
+  static ticketToDto(ticket: Order['tickets'][number]): TicketResponseDto {
     return {
       id: ticket.id,
       film: ticket.film,
@@ -19,9 +17,7 @@ export class OrderMapper {
   static toDto(order: Order): OrderDto {
     return {
       total: order.total, // 🔥 лучше использовать поле из БД
-      items: order.tickets.map((ticket) =>
-        this.ticketToDto(ticket),
-      ),
+      items: order.tickets.map((ticket) => this.ticketToDto(ticket)),
     };
   }
 }
