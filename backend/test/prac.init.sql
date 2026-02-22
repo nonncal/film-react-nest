@@ -38,3 +38,18 @@ create table public.schedules
 alter table public.schedules
     owner to cinema_user;
 
+create table public.orders
+(
+    id uuid default uuid_generate_v4() not null
+        constraint "PK_orders"
+            primary key,
+
+    tickets jsonb not null,
+
+    total integer not null,
+
+    "createdAt" timestamp with time zone default now() not null
+);
+
+alter table public.orders
+    owner to cinema_user;

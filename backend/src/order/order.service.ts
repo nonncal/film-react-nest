@@ -80,7 +80,7 @@ export class OrderService {
         throw new NotFoundException(`Film ${ticket.film} not found`);
       }
 
-      const schedule = film.schedule.find((s) => s.id === ticket.session);
+      const schedule = film.schedules.find((s) => s.id === ticket.session);
 
       if (!schedule) {
         throw new NotFoundException(`Session ${ticket.session} not found`);

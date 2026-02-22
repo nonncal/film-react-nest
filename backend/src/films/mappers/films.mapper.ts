@@ -1,5 +1,6 @@
 import { FilmDto, ScheduleDto } from '../dto/films.dto';
-import { Film, Schedule } from '../schemas/films.schema';
+import { Film } from '../entities/film.entity';
+import { Schedule } from '../entities/schedule.entity';
 export class FilmMapper {
   static scheduleToDto(schedule: Schedule): ScheduleDto {
     return {
@@ -8,23 +9,23 @@ export class FilmMapper {
       hall: schedule.hall,
       rows: schedule.rows,
       seats: schedule.seats,
-      price: schedule.price,
-      taken: schedule.taken,
+      price: Number(schedule.price),
+      taken: schedule.getTakenArray(),
     };
   }
 
   static toDto(film: Film): FilmDto {
     return {
       id: film.id,
-      rating: film.rating,
+      rating: Number(film.rating),
       director: film.director,
-      tags: film.tags,
+      tags: film.getTagsArray(),
       image: film.image,
       cover: film.cover,
       title: film.title,
       about: film.about,
       description: film.description,
-      schedule: film.schedule.map((s) => this.scheduleToDto(s)),
+      schedule: film.schedules.map((s) => this.scheduleToDto(s)),
     };
   }
 

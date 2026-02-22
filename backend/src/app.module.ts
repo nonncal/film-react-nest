@@ -3,10 +3,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
 import * as path from 'node:path';
 import { AppConfigModule } from './config/config.module';
-import { configProvider } from './app.config.provider';
-import { MongooseModule } from '@nestjs/mongoose';
+import { AppConfig, configProvider } from './app.config.provider';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { FilmsModule } from './films/films.module';
 import { OrderModule } from './order/order.module';
+import { getTypeOrmConfig } from './config/typeorm.config';
 
 @Module({
   imports: [
@@ -21,10 +22,8 @@ import { OrderModule } from './order/order.module';
       rootPath: path.join(__dirname, '..', 'public', 'content', 'afisha'),
       serveRoot: '/content/afisha',
     }),
-    MongooseModule.forRootAsync({
-      useFactory: (config) => ({
-        uri: config.database.url,
-      }),
+    TypeOrmModule.forRootAsync({
+      useFactory: (config: AppConfig) => getTypeOrmConfig(config),
       inject: ['CONFIG'],
     }),
     FilmsModule,

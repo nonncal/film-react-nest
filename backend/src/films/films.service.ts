@@ -24,7 +24,7 @@ export class FilmsService {
       throw new NotFoundException('Film not found');
     }
 
-    const scheduleItems = film.schedule.map((schedule) =>
+    const scheduleItems = film.schedules.map((schedule) =>
       FilmMapper.scheduleToDto(schedule),
     );
 

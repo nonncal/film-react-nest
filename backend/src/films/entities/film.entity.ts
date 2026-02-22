@@ -1,9 +1,9 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
-import { Schedule } from "./schedule.entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Schedule } from './schedule.entity';
 
 @Entity('films')
 export class Film {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   rating: number;
@@ -22,10 +22,10 @@ export class Film {
   @Column()
   description: string;
   @OneToMany(() => Schedule, (schedule) => schedule.film)
-  schedule: Schedule[]
+  schedules: Schedule[];
 
   getTagsArray(): string[] {
-    return this.tags ? this.tags.split(',').map(tag => tag.trim()) : [];
+    return this.tags ? this.tags.split(',').map((tag) => tag.trim()) : [];
   }
 
   setTagsArray(tags: string[]): void {

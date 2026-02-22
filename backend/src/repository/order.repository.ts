@@ -1,35 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
-import { Model } from 'mongoose';
+import { Repository } from 'typeorm';
 import { TicketDto } from 'src/order/dto/order.dto';
-import { Order, OrderDocument } from 'src/order/schemas/order.schema';
+import { Order } from 'src/order/entities/order.entity';
 
 @Injectable()
 export class OrderRepository {
   constructor(
-    @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
   ) {}
 
-  async create(tickets: TicketDto[], total: number): Promise<OrderDocument> {
+  async create(tickets: TicketDto[], total: number): Promise<Order> {
     const ticketsWithId = tickets.map((ticket) => ({
       ...ticket,
       id: randomUUID(),
     }));
 
-    const order = new this.orderModel({
+    const order = this.orderRepository.create({
       tickets: ticketsWithId,
       total,
     });
 
-    return order.save();
+    return this.orderRepository.save(order);
   }
 
-  async findAll(): Promise<OrderDocument[]> {
-    return this.orderModel.find().exec();
+  async findAll(): Promise<Order[]> {
+    return this.orderRepository.find();
   }
 
-  async findById(id: string): Promise<OrderDocument | null> {
-    return this.orderModel.findById(id).exec();
+  async findById(id: string): Promise<Order | null> {
+    return this.orderRepository.findOne({ where: { id } });
   }
 }

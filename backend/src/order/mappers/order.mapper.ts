@@ -1,8 +1,10 @@
-import { OrderDocument, Ticket } from '../schemas/order.schema';
+import { Order } from '../entities/order.entity';
 import { OrderDto, TicketResponseDto } from '../dto/order.dto';
 
 export class OrderMapper {
-  static ticketToDto(ticket: Ticket): TicketResponseDto {
+  static ticketToDto(
+    ticket: Order['tickets'][number]
+  ): TicketResponseDto {
     return {
       id: ticket.id,
       film: ticket.film,
@@ -14,10 +16,12 @@ export class OrderMapper {
     };
   }
 
-  static toDto(order: OrderDocument): OrderDto {
+  static toDto(order: Order): OrderDto {
     return {
-      total: order.tickets.length,
-      items: order.tickets.map((ticket) => this.ticketToDto(ticket)),
+      total: order.total, // 🔥 лучше использовать поле из БД
+      items: order.tickets.map((ticket) =>
+        this.ticketToDto(ticket),
+      ),
     };
   }
 }

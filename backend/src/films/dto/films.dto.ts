@@ -3,7 +3,6 @@ import {
   IsDateString,
   IsFQDN,
   IsInt,
-  IsMongoId,
   IsNumber,
   IsString,
   Min,
@@ -11,7 +10,7 @@ import {
 
 //TODO описать DTO для запросов к /films
 export class ScheduleDto {
-  @IsMongoId()
+  @IsString()
   id: string;
   @IsDateString()
   daytime: string;
@@ -32,7 +31,7 @@ export class ScheduleDto {
 }
 
 export class FilmDto {
-  @IsMongoId()
+  @IsString()
   id: string;
   @IsInt()
   @Min(0)
