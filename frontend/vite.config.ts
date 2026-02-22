@@ -8,7 +8,10 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         includePaths: ['src/scss']
-      }
+      },
+      sass: {
+        api: 'modern-compiler',   // <-- эта строка убирает legacy‑предупреждения
+      },
     }
   },
 })
