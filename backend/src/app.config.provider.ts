@@ -1,4 +1,3 @@
-// src/config/app.config.provider.ts
 import { ConfigService } from '@nestjs/config';
 
 export const configProvider = {
@@ -12,12 +11,16 @@ export const configProvider = {
       password: configService.get<string>('DATABASE_PASSWORD', 'cinema_pass'),
       database: configService.get<string>('DATABASE_NAME', 'cinema_db'),
     },
+    debug: configService.get<boolean>('DEBUG', false),
+    logger: configService.get<string>('LOGGER', 'tskv'),
   }),
   inject: [ConfigService],
 };
 
 export interface AppConfig {
   database: AppConfigDatabase;
+  debug: boolean;
+  logger: string;
 }
 
 export interface AppConfigDatabase {

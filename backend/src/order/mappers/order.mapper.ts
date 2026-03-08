@@ -16,7 +16,7 @@ export class OrderMapper {
 
   static toDto(order: Order): OrderDto {
     return {
-      total: order.total, // 🔥 лучше использовать поле из БД
+      total: order.total,
       items: order.tickets.map((ticket) => this.ticketToDto(ticket)),
     };
   }
