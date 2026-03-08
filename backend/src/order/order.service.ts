@@ -3,10 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { FilmsRepository } from 'src/repository/films.repository';
+import { FilmsRepository } from '../repository/films.repository';
 import { TicketDto, OrderDto } from './dto/order.dto';
 import { OrderMapper } from './mappers/order.mapper';
-import { OrderRepository } from 'src/repository/order.repository';
+import { OrderRepository } from '../repository/order.repository';
 
 @Injectable()
 export class OrderService {

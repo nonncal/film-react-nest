@@ -19,6 +19,6 @@ export class JsonLogger implements LoggerService {
   }
 
   debug(message: any, ...optionalParams: any[]) {
-    console.warn(this.formatMessage('debug', message, ...optionalParams));
+    console.debug(this.formatMessage('debug', message, ...optionalParams));
   }
 }

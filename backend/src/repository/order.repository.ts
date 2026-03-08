@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
 import { Repository } from 'typeorm';
 import { TicketDto } from 'src/order/dto/order.dto';
-import { Order } from 'src/order/entities/order.entity';
+import { Order } from '../order/entities/order.entity';
 
 @Injectable()
 export class OrderRepository {

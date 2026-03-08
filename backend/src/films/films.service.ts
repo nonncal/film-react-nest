@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { FilmsResponse } from './dto/films.dto';
-import { FilmsRepository } from 'src/repository/films.repository';
-import { FilmMapper } from './mappers/films.mapper';
+ import { FilmMapper } from './mappers/films.mapper';
+import { FilmsRepository } from '../repository/films.repository';
 
 @Injectable()
 export class FilmsService {
