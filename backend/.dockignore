@@ -1,0 +1,15 @@
+.idea/
+
+node_modules/
+
+dist/
+
+Dockerfile
+
+LICENSE
+
+README.md
+
+log/
+
+.env.example
