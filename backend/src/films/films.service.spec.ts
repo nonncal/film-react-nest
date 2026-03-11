@@ -13,7 +13,10 @@ describe('FilmsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FilmsService, { provide: FilmsRepository, useValue: mockFilmsRepository }],
+      providers: [
+        FilmsService,
+        { provide: FilmsRepository, useValue: mockFilmsRepository },
+      ],
     }).compile();
 
     service = module.get<FilmsService>(FilmsService);

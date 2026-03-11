@@ -21,11 +21,12 @@ services:
       - postgres
     environment:
       DATABASE_DRIVER: postgres
-      DATABASE_URL: postgres://cinema_user:cinema_pass@postgres:5432/cinema_db
+      DATABASE_HOST: postgres
       DATABASE_PORT: 5432
       DATABASE_USERNAME: cinema_user
       DATABASE_PASSWORD: cinema_pass
       DATABASE_NAME: cinema_db
+      LOGGER: dev
     networks:
       - postgres
       - nginx

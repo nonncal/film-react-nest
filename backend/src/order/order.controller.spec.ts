@@ -10,11 +10,13 @@ describe('OrderController', () => {
     findAll: jest.fn(),
   };
 
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrderController],
-      providers: [OrderService, { provide: OrderService, useValue: mockOrderService }],
+      providers: [
+        OrderService,
+        { provide: OrderService, useValue: mockOrderService },
+      ],
     }).compile();
 
     controller = module.get<OrderController>(OrderController);

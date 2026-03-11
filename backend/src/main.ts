@@ -11,13 +11,18 @@ async function bootstrap() {
   });
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
-  switch (app.get('LOGGER')) {
+  const config = app.get('CONFIG');
+
+  switch (config.logger) {
     case 'tskv':
       app.useLogger(new TSKVLogger());
+      break;
     case 'json':
       app.useLogger(new JsonLogger());
+      break;
     case 'dev':
       app.useLogger(new DevLogger());
+      break;
   }
   await app.listen(3000);
 }
