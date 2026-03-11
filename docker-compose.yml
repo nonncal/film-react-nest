@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: cinema_pass
       POSTGRES_DB: cinema_db
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - postgres
 
@@ -19,16 +19,19 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
-    env_file:
-      - ./backend/.env
+    environment:
+      DATABASE_DRIVER: postgres
+      DATABASE_URL: postgres://cinema_user:cinema_pass@postgres:5432/cinema_db
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: cinema_user
+      DATABASE_PASSWORD: cinema_pass
+      DATABASE_NAME: cinema_db
     networks:
       - postgres
       - nginx
 
   frontend:
     image: ghcr.io/nonncal/film-react-nest/frontend:latest
-    volumes:
-      - frontend:/app/dist
     networks:
       - nginx
 
@@ -39,16 +42,16 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - frontend:/usr/share/nginx/html
     depends_on:
-      - backend
       - frontend
+      - backend
     networks:
       - nginx
     restart: unless-stopped
 
   pgadmin:
     image: dpage/pgadmin4
+    restart: unless-stopped
     ports:
       - "8080:80"
     environment:
@@ -60,13 +63,11 @@ services:
       - postgres
     networks:
       - postgres
-    restart: unless-stopped
 
 networks:
   nginx:
   postgres:
 
 volumes:
-  pg-data:
-  frontend:
+  postgres_data:
   pgadmin:

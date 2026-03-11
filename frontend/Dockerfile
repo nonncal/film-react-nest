@@ -1,21 +1,15 @@
-FROM node:20-alpine as builder 
+FROM node:20-alpine AS builder
 
 WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
 
 COPY . .
+RUN npm run build
 
-RUN npm ci 
+FROM nginx:alpine
 
-RUN npm run build 
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-FROM node:20-alpine as production
-
-WORKDIR /app
-
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist /dist
-
-RUN npm ci 
-
-CMD [ "npm", "run", "dev" ]
-
+EXPOSE 80
